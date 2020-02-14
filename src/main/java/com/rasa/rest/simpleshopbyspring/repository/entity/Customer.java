@@ -143,15 +143,21 @@ public class Customer
         this.orderList = orderList;
     }
 
+    @ApiModelProperty(hidden = true)
+    public void setCreateUpdate(Date date)
+    {
+        this.createDate = date;
+        this.updateDate = date;
+    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "cid=" + id +
+        return "Customer{" + "id=" + id +
                 ", name='" + name + '\'' +
-                ", eamil='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", password='" + password +
+                '\'' + ", email='" + email + '\'' +
+                ", phoneNumber=" + phoneNumber +
                 ", createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                '}';
+                ", updateDate=" + updateDate + '}';
     }
 }

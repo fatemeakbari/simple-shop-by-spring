@@ -14,10 +14,8 @@ public class AddressService {
     @Autowired
     AddressRepository addressRepository;
 
-    public void save(Long customerId, String line)
+    public void save(Address address)
     {
-        Customer customer = new Customer(customerId);
-        Address address = new Address(customer,line);
         addressRepository.save(address);
     }
 
@@ -30,10 +28,8 @@ public class AddressService {
         return addressRepository.findByCustomer_Id(customerId);
     }
 
-    public void update(Long id, String line)
+    public void update(Address address)
     {
-        Address address = addressRepository.getOne(id);
-        address.setLine(line);
         addressRepository.save(address);
     }
 

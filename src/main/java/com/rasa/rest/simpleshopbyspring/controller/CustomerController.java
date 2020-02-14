@@ -1,11 +1,18 @@
 package com.rasa.rest.simpleshopbyspring.controller;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.rasa.rest.simpleshopbyspring.repository.entity.Address;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Customer;
+import com.rasa.rest.simpleshopbyspring.repository.entity.Order;
 import com.rasa.rest.simpleshopbyspring.service.AddressService;
 import com.rasa.rest.simpleshopbyspring.service.CustomerService;
+import com.rasa.rest.simpleshopbyspring.service.OrderService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.models.Response;
 import org.hibernate.annotations.GeneratorType;
+import org.hibernate.annotations.OrderBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +28,9 @@ public class CustomerController
     @Autowired
     private AddressService addressService;
 
+    @Autowired
+    private OrderService orderService;
+
     @PostMapping("/customers")
     public void save(@RequestBody Customer customer)
     {
@@ -28,9 +38,17 @@ public class CustomerController
     }
 
     @PostMapping("/customers/{id}/addresses")
-    public void addAddress(@PathVariable Long id,@RequestParam String line)
+    public void addAddress(@PathVariable Long id, @RequestBody Address address)
     {
-        customerService.addAddress(id,line);
+        address.setCustomer(new Customer(id));
+        addressService.save(address);
+    }
+
+    @PostMapping("/customers/{id}/orders")
+    public void addOrder(@PathVariable Long id,@RequestBody Order order)
+    {
+        order.setCustomer(new Customer(id));
+        orderService.save(order);
     }
 
     @GetMapping("/customers/{id}")
@@ -56,7 +74,15 @@ public class CustomerController
     public Customer getAddressesByCustomerId(@PathVariable Long id)
     {
         Customer customer = customerService.findById(id);
-        customer.setAddressList(addressService.findByCustomerId(customer.getId()));
+        customer.setAddressList(addressService.findByCustomerId(id));
+        return customer;
+    }
+
+    @GetMapping("/customers/{id}/orders")
+    public Customer getOrdersByCustomerId(@PathVariable Long id)
+    {
+        Customer customer = customerService.findById(id);
+        customer.setOrderList(orderService.findByCustomerId(id));
         return customer;
     }
 
@@ -67,6 +93,21 @@ public class CustomerController
         customerService.update(customer);
     }
 
+    @PutMapping("/customers/{id}/addresses/{addressId}")
+    public void updateAddress(@PathVariable Long id, @PathVariable Long addressId, @RequestBody Address address)
+    {
+        address.setId(addressId);
+        address.setCustomer(new Customer(id));
+        addressService.update(address);
+    }
+
+    @PutMapping("/customers/{id}/orders/{orderId}")
+    public void updateOrder(@PathVariable Long id,@PathVariable Long orderId, @RequestBody Order order)
+    {
+        order.setId(orderId);
+        order.setCustomer(new Customer(id));
+        orderService.update(order);
+    }
 
     @DeleteMapping("/customers/{id}")
     public void delete(@PathVariable Long id)
@@ -77,8 +118,13 @@ public class CustomerController
     @DeleteMapping("/customers/{id}/addresses/{addressId}")
      public void deleteAddress(@PathVariable Long id,@PathVariable Long addressId)
     {
-        customerService.deleteAddress(addressId);
+        addressService.deleteById(addressId);
     }
 
+    @DeleteMapping("/customers/{id}/addresses/{orderId}")
+    public void deleteOrder(@PathVariable Long id,@PathVariable Long orderId)
+    {
+        orderService.deleteById(orderId);
+    }
 
 }

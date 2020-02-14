@@ -1,6 +1,8 @@
 package com.rasa.rest.simpleshopbyspring.repository.entity;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,23 +29,17 @@ public class Product {
     @Column(name = "available_number")
     private int availableNumber;
 
+    @ApiModelProperty(hidden = true)
     @Column(name = "create_date", updatable = false)
     private Date createDate;
 
+    @ApiModelProperty(hidden = true)
     @Column(name = "update_date")
     private Date updateDate;
 
 
     @ManyToMany(mappedBy = "productList")
     private List<Order> orderList = new ArrayList<>();
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
-    }
 
 
     public Product() {
@@ -120,6 +116,14 @@ public class Product {
 
     public Date getUpdateDate() {
         return updateDate;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
 

@@ -1,6 +1,7 @@
 package com.rasa.rest.simpleshopbyspring.repository.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -16,6 +17,8 @@ public class Order
     @Column
     private Long id;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -26,6 +29,7 @@ public class Order
     @OneToOne
     @JoinColumn(name = "delivery_address")
     private Address deliveryAddress;
+
 
     @Column(name = "delivery_time", nullable = true)
     private Date deliveryTime;
@@ -41,6 +45,8 @@ public class Order
     @Column(name = "update_date")
     private Date updateDate;
 
+
+    @ApiModelProperty(hidden = true)
     @ManyToMany
     @JoinTable(name = "orders_product",
             joinColumns = @JoinColumn(name = "order_id"),
@@ -139,6 +145,7 @@ public class Order
         this.productList = productList;
     }
 
+    @ApiModelProperty(hidden = true)
     public void setCreateUpdateDate(Date date)
     {
         this.createDate = date;

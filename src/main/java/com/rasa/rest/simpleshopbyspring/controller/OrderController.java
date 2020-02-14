@@ -1,7 +1,5 @@
 package com.rasa.rest.simpleshopbyspring.controller;
 
-import com.rasa.rest.simpleshopbyspring.repository.entity.Address;
-import com.rasa.rest.simpleshopbyspring.repository.entity.Customer;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Order;
 import com.rasa.rest.simpleshopbyspring.service.OrderService;
 import io.swagger.annotations.Api;
@@ -18,14 +16,14 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/orders")
-    public void save(@RequestParam Long customerId, @RequestParam Long addressId, @RequestParam int payType)
+    public void save(@RequestBody Order order)
     {
-        orderService.save(customerId,addressId,payType);
+        orderService.save(order);
     }
     @GetMapping("/orders/{id}")
-    public void findById(@PathVariable Long id)
+    public Order findById(@PathVariable Long id)
     {
-        orderService.findById(id);
+        return orderService.findById(id);
     }
 
     @GetMapping("/orders/customer/{customerId}")
@@ -34,9 +32,16 @@ public class OrderController {
         return orderService.findByCustomerId(customerId);
     }
 
-    @PutMapping("/orders/{id}")
-    public void update(@RequestBody Order order)
+    @GetMapping("/orders")
+    public List<Order> findAll()
     {
+        return orderService.findAll();
+    }
+
+    @PutMapping("/orders/{id}")
+    public void update(@PathVariable Long id,@RequestBody Order order)
+    {
+        order.setId(id);
         orderService.update(order);
     }
 }

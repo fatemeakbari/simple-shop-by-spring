@@ -19,7 +19,12 @@ public class OrderService {
 
     public Date getDate(){ return new java.sql.Timestamp(new java.util.Date().getTime());}
 
-    public void save(Long customerId, Long addressId,int payType)
+    public void save(Order order)
+    {
+        order.setCreateUpdateDate(getDate());
+        orderRepository.save(order);
+    }
+    public void save_(Long customerId, Long addressId,int payType)
     {
         Customer customer = new Customer(customerId);
         Address address = new Address(addressId);
@@ -38,6 +43,10 @@ public class OrderService {
         return orderRepository.findByCustomer_Id(customerId);
     }
 
+    public List<Order> findAll()
+    {
+        return orderRepository.findAll();
+    }
     public void update(Order order)
     {
         order.setUpdateDate(getDate());
