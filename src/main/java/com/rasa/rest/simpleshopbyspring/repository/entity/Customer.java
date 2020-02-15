@@ -1,14 +1,11 @@
 package com.rasa.rest.simpleshopbyspring.repository.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.xml.internal.ws.developer.Serialization;
+
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-//https://stackoverflow.com/questions/35155916/handling-ambiguous-handler-methods-mapped-in-rest-application-with-spring
 @Entity
 @Table(name = "customer")
 public class Customer
