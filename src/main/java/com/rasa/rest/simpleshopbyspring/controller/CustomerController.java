@@ -51,6 +51,12 @@ public class CustomerController
         orderService.save(order);
     }
 
+    @PostMapping("/customers/{id}/orders/{orderId}/products/{productId}")
+    public void addProduct(@PathVariable Long id, @PathVariable Long orderId, @PathVariable Long productId)
+    {
+        orderService.addProduct(orderId,productId);
+    }
+
     @GetMapping("/customers/{id}")
     public Customer findById(@PathVariable Long id)
     {
@@ -71,7 +77,7 @@ public class CustomerController
 
 
     @GetMapping("/customer/{id}/addresses")
-    public Customer getAddressesByCustomerId(@PathVariable Long id)
+    public Customer findByIdAndFindAddresses(@PathVariable Long id)
     {
         Customer customer = customerService.findById(id);
         customer.setAddressList(addressService.findByCustomerId(id));
@@ -121,10 +127,15 @@ public class CustomerController
         addressService.deleteById(addressId);
     }
 
-    @DeleteMapping("/customers/{id}/addresses/{orderId}")
+    @DeleteMapping("/customers/{id}/orders/{orderId}")
     public void deleteOrder(@PathVariable Long id,@PathVariable Long orderId)
     {
         orderService.deleteById(orderId);
     }
 
+    @PostMapping("/customers/{id}/orders/{orderId}/products")
+    public void deleteProductFromOrder(@PathVariable Long id, @PathVariable Long orderId, @RequestParam Long productId)
+    {
+        orderService.deleteProductFromOrder(orderId,productId);
+    }
 }

@@ -3,12 +3,18 @@ package com.rasa.rest.simpleshopbyspring.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
+@NamedEntityGraph(name = "order.productlist",
+        attributeNodes = @NamedAttributeNode("productList"))
+
 @Table(name = "orders")
 public class Order
 {
@@ -16,7 +22,6 @@ public class Order
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-
 
     @JsonIgnore
     @ManyToOne
@@ -47,12 +52,12 @@ public class Order
 
 
     @ApiModelProperty(hidden = true)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "orders_product",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
 
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
     public Order() {
     }
     public Order(Long id)

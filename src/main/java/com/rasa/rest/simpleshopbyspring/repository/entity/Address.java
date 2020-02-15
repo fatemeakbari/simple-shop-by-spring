@@ -14,8 +14,7 @@ public class Address
     @Column(name = "id")
     private Long id;
 
-
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -30,7 +29,6 @@ public class Address
     {
         this.customer = customer;
         this.line = line;
-
     }
     public Long getId() {
         return id;
@@ -40,7 +38,7 @@ public class Address
         this.id = id;
     }
 
-    @JsonIgnore
+
     public Customer getCustomer() {
         return customer;
     }

@@ -38,6 +38,7 @@ public class Customer
     @Column(name = "update_date", nullable = false)
     private Date updateDate;
 
+
     @Transient
     @ApiModelProperty(hidden = true)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")

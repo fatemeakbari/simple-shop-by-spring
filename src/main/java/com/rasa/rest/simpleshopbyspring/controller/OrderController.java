@@ -1,5 +1,6 @@
 package com.rasa.rest.simpleshopbyspring.controller;
 
+import com.rasa.rest.simpleshopbyspring.repository.entity.Customer;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Order;
 import com.rasa.rest.simpleshopbyspring.service.OrderService;
 import io.swagger.annotations.Api;
@@ -16,8 +17,9 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/orders")
-    public void save(@RequestBody Order order)
+    public void save(@RequestParam Long customerId,@RequestBody Order order)
     {
+        order.setCustomer(new Customer(customerId));
         orderService.save(order);
     }
     @GetMapping("/orders/{id}")
@@ -32,6 +34,11 @@ public class OrderController {
         return orderService.findByCustomerId(customerId);
     }
 
+//    @GetMapping("orders/{id}/products")
+//    public Order findByIdAndFindProduct(@PathVariable Long id)
+//    {
+//        return orderService.findByIdAndFindProduct(id);
+//    }
     @GetMapping("/orders")
     public List<Order> findAll()
     {
@@ -39,9 +46,26 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{id}")
-    public void update(@PathVariable Long id,@RequestBody Order order)
+    public void update(@PathVariable Long id, @RequestParam Long customerId,@RequestBody Order order)
     {
         order.setId(id);
+        order.setCustomer(new Customer(customerId));
         orderService.update(order);
+    }
+    @PutMapping("/orders/{id}/products/{productId}")
+    public void addProduct(@PathVariable Long id, @PathVariable Long productId)
+    {
+        orderService.addProduct(id,productId);
+    }
+
+    @DeleteMapping("/orders/{id}")
+    public void deleteById(@PathVariable Long id)
+    {
+        orderService.deleteById(id);
+    }
+    @PostMapping("/orders/{id}/products")
+    public void deleteProductFromOrder(@PathVariable Long id, @RequestParam Long productId)
+    {
+        orderService.deleteProductFromOrder(id,productId);
     }
 }

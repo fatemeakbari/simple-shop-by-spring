@@ -38,10 +38,6 @@ public class Product {
     private Date updateDate;
 
 
-    @ManyToMany(mappedBy = "productList")
-    private List<Order> orderList = new ArrayList<>();
-
-
     public Product() {
     }
     public Product(Long id) {
@@ -116,14 +112,6 @@ public class Product {
 
     public Date getUpdateDate() {
         return updateDate;
-    }
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
     }
 
 

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api(tags = "Product Api")
+@RestController
+
 public class ProductContrroller
 {
     @Autowired
@@ -32,6 +34,12 @@ public class ProductContrroller
         return productService.findByName(name);
     }
 
+    @GetMapping("/products/category/{category}")
+    public List<Product> findByCategory(@PathVariable int category)
+    {
+        return productService.findByCategory(category);
+    }
+
     @GetMapping("/products")
     public List<Product> findAll()
     {
@@ -44,7 +52,7 @@ public class ProductContrroller
         productService.update(product);
     }
 
-    @DeleteMapping("/products/{id]")
+    @DeleteMapping("/products/{id}")
     public void deleteById(@PathVariable Long id)
     {
         productService.deleteById(id);
