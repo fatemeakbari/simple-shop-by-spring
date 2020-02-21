@@ -23,9 +23,10 @@ public class AddressService {
     {
         return addressRepository.getOne(id);
     }
+
     public List<Address> findByCustomerId(Long customerId)
     {
-        return addressRepository.findByCustomer_Id(customerId);
+        return addressRepository.findByCustomerId(customerId);
     }
 
     public void update(Address address)

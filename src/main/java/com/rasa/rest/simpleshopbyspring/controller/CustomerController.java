@@ -8,11 +8,6 @@ import com.rasa.rest.simpleshopbyspring.service.AddressService;
 import com.rasa.rest.simpleshopbyspring.service.CustomerService;
 import com.rasa.rest.simpleshopbyspring.service.OrderService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.models.Response;
-import org.hibernate.annotations.GeneratorType;
-import org.hibernate.annotations.OrderBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,7 +71,7 @@ public class CustomerController
     }
 
 
-    @GetMapping("/customer/{id}/addresses")
+    @GetMapping("/customers/{id}/addresses")
     public Customer findByIdAndFindAddresses(@PathVariable Long id)
     {
         Customer customer = customerService.findById(id);

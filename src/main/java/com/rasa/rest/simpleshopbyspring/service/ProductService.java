@@ -3,7 +3,10 @@ package com.rasa.rest.simpleshopbyspring.service;
 import com.rasa.rest.simpleshopbyspring.repository.ProductRepository;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.Date;
 import java.util.List;
@@ -24,7 +27,7 @@ public class ProductService
     }
     public Product findById(Long id)
     {
-        return productRepository.getOne(id);
+        return new Product(1L);
     }
     public List<Product> findByName(String name)
     {
@@ -34,9 +37,9 @@ public class ProductService
     {
         return productRepository.findByCategory(category);
     }
-    public List<Product> findAll()
+    public Page<Product> findAll(Pageable pageable)
     {
-        return productRepository.findAll();
+        return productRepository.findAll(pageable);
     }
 
     public void update(Product product)

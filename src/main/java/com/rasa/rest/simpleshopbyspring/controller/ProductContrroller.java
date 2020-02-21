@@ -3,9 +3,14 @@ package com.rasa.rest.simpleshopbyspring.controller;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Product;
 import com.rasa.rest.simpleshopbyspring.service.ProductService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @Api(tags = "Product Api")
@@ -41,9 +46,20 @@ public class ProductContrroller
     }
 
     @GetMapping("/products")
-    public List<Product> findAll()
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N)"),
+
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
+    })
+   public Page<Product> findAll(Pageable pageable)
     {
-        return productService.findAll();
+        return productService.findAll(pageable);
     }
 
     @PutMapping("/products")
