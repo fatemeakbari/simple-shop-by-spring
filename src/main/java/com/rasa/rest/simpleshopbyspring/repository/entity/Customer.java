@@ -7,7 +7,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 @Entity
-@Table(name = "customer")
+@Table(name = "customer",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "phone_number",name = "unique_phone_number"),
+                @UniqueConstraint(columnNames = "email",name = "unique_email")})
 public class Customer
 {
     @Id
@@ -158,4 +160,6 @@ public class Customer
                 ", createDate=" + createDate +
                 ", updateDate=" + updateDate + '}';
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.rasa.rest.simpleshopbyspring.service;
 
+import com.rasa.rest.simpleshopbyspring.dto.response.ProductPagedListResponse;
 import com.rasa.rest.simpleshopbyspring.repository.ProductRepository;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,13 @@ public class ProductService
     {
         return productRepository.findByCategory(category);
     }
-    public Page<Product> findAll(Pageable pageable)
+    public ProductPagedListResponse findAll(Pageable pageable)
     {
-        return productRepository.findAll(pageable);
+
+        ProductPagedListResponse pplr = new ProductPagedListResponse(
+                productRepository.findAll(pageable),
+                pageable, (int) productRepository.count());
+        return pplr;
     }
 
     public void update(Product product)

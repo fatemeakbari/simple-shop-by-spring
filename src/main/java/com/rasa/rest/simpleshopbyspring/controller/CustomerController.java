@@ -1,6 +1,6 @@
 package com.rasa.rest.simpleshopbyspring.controller;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.rasa.rest.simpleshopbyspring.EntityNotFoundException;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Address;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Customer;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Order;
@@ -8,9 +8,14 @@ import com.rasa.rest.simpleshopbyspring.service.AddressService;
 import com.rasa.rest.simpleshopbyspring.service.CustomerService;
 import com.rasa.rest.simpleshopbyspring.service.OrderService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = "Customer Api")
@@ -27,7 +32,7 @@ public class CustomerController
     private OrderService orderService;
 
     @PostMapping("/customers")
-    public void save(@RequestBody Customer customer)
+    public void save(@RequestBody @Valid Customer customer) throws Exception
     {
         customerService.save(customer);
     }
@@ -53,11 +58,27 @@ public class CustomerController
     }
 
     @GetMapping("/customers/{id}")
-    public Customer findById(@PathVariable Long id)
+    public Customer findById(@PathVariable Long id) throws EntityNotFoundException
     {
         return customerService.findById(id);
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N)"),
+
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
+    })
+    @GetMapping("/customers/name/{name}")
+    public Page<Customer> findByName(Pageable pageable, @PathVariable String name)
+    {
+        return  customerService.findByName(pageable,name);
+    }
     @GetMapping("/customers/email/{email}")
     public Customer findByEmail(@PathVariable String email)
     {

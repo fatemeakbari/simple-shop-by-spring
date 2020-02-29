@@ -1,5 +1,6 @@
 package com.rasa.rest.simpleshopbyspring.controller;
 
+import com.rasa.rest.simpleshopbyspring.dto.response.ProductPagedListResponse;
 import com.rasa.rest.simpleshopbyspring.repository.entity.Product;
 import com.rasa.rest.simpleshopbyspring.service.ProductService;
 import io.swagger.annotations.Api;
@@ -57,9 +58,10 @@ public class ProductContrroller
                             "Default sort order is ascending. " +
                             "Multiple sort criteria are supported.")
     })
-   public Page<Product> findAll(Pageable pageable)
+   public ProductPagedListResponse findAll(Pageable pageable)
     {
         return productService.findAll(pageable);
+
     }
 
     @PutMapping("/products")
